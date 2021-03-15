@@ -18,13 +18,14 @@ record=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/$zone_identi
 	-H "Content-Type: application/json")
 
 # Can't do anything without the record
-if [[ $record == *"\"count\":0"* ]]; then
-	>&2 echo -e "[Cloudflare DDNS] Record does not exist, perhaps create one first?"
+record_count=$(echo $record | jq -r '.result_info.count')
+if [[ $record_count == 0 ]]; then
+	>&2 echo "[Cloudflare DDNS] Record does not exist, perhaps create one first?"
 	exit 1
 fi
 
 # Extract existing IP address from the fetched record
-old_ip=$(echo $record | grep -o '"content": "[^"]*' | grep -o '[^"]*$' | head -1)
+old_ip=$(echo $record | jq -r '.result[0].content')
 echo "[Cloudflare DDNS] Currently set to $old_ip"
 
 # Compare if they're the same
@@ -34,7 +35,7 @@ if [ "$ip" == "$old_ip" ]; then
 fi
 
 # Extract record identifier from result
-record_identifier=$(echo $record | grep -o '"id": "[^"]*' | grep -o '[^"]*$' | head -1)
+record_identifier=$(echo $record | jq -r '.result[0].id')
 
 # Update IP address through Cloudflare API
 update=$(curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/$zone_identifier/dns_records/$record_identifier" \
@@ -48,7 +49,7 @@ currenttime=$(date '+%Y-%m-%dT%H:%M%z')
 echo "$currenttime, $ip" >> ip-address.txt
 
 # Result
-success=$(echo $update | grep -o '"success": .*, "'| awk '{sub(",.*$",""); print $0 }' | awk '{sub("\"success\": ",""); print $0 }')
+success=$(echo $update | jq -r '.success')
 
 case "$success" in
 "true")
