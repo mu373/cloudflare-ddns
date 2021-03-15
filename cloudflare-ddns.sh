@@ -30,7 +30,7 @@ echo "[Cloudflare DDNS] Currently set to $old_ip"
 
 # Compare if they're the same
 if [ "$ip" == "$old_ip" ]; then
-	echo "[Cloudflare DDNS] IP has not changed."
+	echo "[Cloudflare DDNS] IP address has not changed."
 	exit 0
 fi
 
@@ -55,6 +55,6 @@ case "$success" in
 "true")
 	echo "[Cloudflare DDNS] IPv4 context '$ip' has been synced to Cloudflare.";;
 *)
-	>&2 echo -e "[Cloudflare DDNS] Update failed for $record_identifier. DUMPING RESULTS:\n$update"
+	>&2 echo "[Cloudflare DDNS] Update failed for $record_identifier. DUMPING RESULTS:\n$update"
 	exit 1;;
 esac
