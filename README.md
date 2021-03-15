@@ -10,4 +10,25 @@ This script is intended to be used for specific needs:
 
 Although EdgeRouter X has [build-in Dynamic DNS client](https://help.ui.com/hc/en-us/articles/204952234-EdgeRouter-Built-in-Dynamic-DNS), it does not work in an environment where its interface does not have global IPv4 address.
 
-
+## Setup
+- Update settings in the script
+	- `auth_email`: Email address used to login https://dash.cloudflare.com
+	- `auth_key`: Top right corner, "My profile" > "Global API Key"
+	- `zone_identifier`: Can be found in the "Overview" tab of your domain
+	- `record_name`: Domain which you want to update the A record
+	- `keep_log`: Whether or not you want to keep IP address changes as log (true/false)
+- Copy script to EdgeRouter `/config/scripts`.
+- Update permission on EdgeRouter: `chmod 755 cloudflare-ddns.sh`
+- Set task scheduler
+```
+configure
+set system task-scheduler task cloudflare-ddns executable path /config/scripts/cloudflare-ddns.sh
+set system task-scheduler task cloudflare-ddns interval 15m
+commit; save; exit;
+```
+- Confirm scheduled task
+```
+configure
+show system task-scheduler
+exit
+```
