@@ -3,10 +3,10 @@
 # Forked from lifehome/systemd-cfddns/src/cfupdater-v4
 
 # CHANGE THESE
-auth_email="mail@hogehoge.com"            # The email used to login 'https://dash.cloudflare.com'
+auth_email="mail@example.com"            # The email used to login 'https://dash.cloudflare.com'
 auth_key="xxxxx"   # Top right corner, "My profile" > "Global API Key"
 zone_identifier="xxxxx" # Can be found in the "Overview" tab of your domain
-record_name="fuga.hoge.com"                     # Which record you want to be synced
+record_name="foo.example.com"                     # Which record you want to be synced
 
 # Fetch Global IP address
 ip=$(curl -s inet-ip.info)
