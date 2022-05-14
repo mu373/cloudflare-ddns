@@ -12,6 +12,9 @@ keep_log=true
 # Fetch Global IP address
 ip=$(curl -s inet-ip.info)
 
+# Or you can use IP address from a specific interface
+# ip=$(ip address show pppoe0 | grep -Po 'inet \K[\d.]+')
+
 # Seek for the current record on Cloudflare
 record=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/$zone_identifier/dns_records?name=$record_name" \
 	-H "Authorization: Bearer $auth_key" \
