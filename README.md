@@ -12,8 +12,7 @@ Although EdgeRouter X has [build-in Dynamic DNS client](https://help.ui.com/hc/e
 
 ## Setup
 - Update settings in the script
-	- `auth_email`: Email address used to login https://dash.cloudflare.com
-	- `auth_key`: Top right corner, "My profile" > "Global API Key"
+	- `auth_key`: Top right corner, go to "My profile" > "API token" and generate new token allowing access to read and edit DNS.
 	- `zone_identifier`: Can be found in the "Overview" tab of your domain
 	- `record_name`: Domain which you want to update the A record
 	- `keep_log`: Whether or not you want to keep IP address changes as log (true/false)

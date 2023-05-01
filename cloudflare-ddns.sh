@@ -3,7 +3,6 @@
 # Forked from lifehome/systemd-cfddns/src/cfupdater-v4
 
 # CHANGE THESE
-auth_email="mail@example.com"            # The email used to login 'https://dash.cloudflare.com'
 auth_key="xxxxx"   # Top right corner, go to "My profile" > "API token" and generate new token allowing access to read and edit DNS.
 zone_identifier="xxxxx" # Can be found in the "Overview" tab of your domain
 record_name="foo.example.com"                     # Which record you want to be synced
