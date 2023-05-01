@@ -3,19 +3,20 @@
 # Forked from lifehome/systemd-cfddns/src/cfupdater-v4
 
 # CHANGE THESE
-auth_email="mail@example.com"            # The email used to login 'https://dash.cloudflare.com'
-auth_key="xxxxx"   # Top right corner, "My profile" > "Global API Key"
+auth_key="xxxxx"   # Top right corner, go to "My profile" > "API token" and generate new token allowing access to read and edit DNS.
 zone_identifier="xxxxx" # Can be found in the "Overview" tab of your domain
 record_name="foo.example.com"                     # Which record you want to be synced
 keep_log=true
 
 # Fetch Global IP address
-ip=$(curl -s inet-ip.info)
+ip=$(curl -4s ifconfig.co)
+
+# Or you can use IP address from a specific interface
+# ip=$(ip address show pppoe0 | grep -Po 'inet \K[\d.]+')
 
 # Seek for the current record on Cloudflare
 record=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/$zone_identifier/dns_records?name=$record_name" \
-	-H "X-Auth-Email: $auth_email" \
-	-H "X-Auth-Key: $auth_key" \
+	-H "Authorization: Bearer $auth_key" \
 	-H "Content-Type: application/json")
 
 # Can't do anything without the record
@@ -40,8 +41,7 @@ record_identifier=$(echo $record | jq -r '.result[0].id')
 
 # Update IP address through Cloudflare API
 update=$(curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/$zone_identifier/dns_records/$record_identifier" \
-	-H "X-Auth-Email: $auth_email" \
-	-H "X-Auth-Key: $auth_key" \
+	-H "Authorization: Bearer $auth_key" \
 	-H "Content-Type: application/json" \
 	--data "{\"type\":\"A\",\"name\":\"$record_name\",\"content\":\"$ip\",\"ttl\":1}")
 
