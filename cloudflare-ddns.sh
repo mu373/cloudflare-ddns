@@ -9,7 +9,7 @@ record_name="foo.example.com"                     # Which record you want to be 
 keep_log=true
 
 # Fetch Global IP address
-ip=$(curl -s inet-ip.info)
+ip=$(curl -4s ifconfig.co)
 
 # Or you can use IP address from a specific interface
 # ip=$(ip address show pppoe0 | grep -Po 'inet \K[\d.]+')
